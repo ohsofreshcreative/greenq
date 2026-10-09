@@ -109,17 +109,90 @@ Nazwy bloku nie wymyślaj samodzielnie — gdy zadanie dotyczy nowego bloku (zw�
 screena/designu), użyj nazwy podanej przez użytkownika w prompcie. Jeśli nazwa nie została podana,
 zapytaj, zamiast zgadywać.
 
-Blok = 3–4 pliki:
+Blok = 4–5 plików:
 
 1. `app/Blocks/Nazwa.php` — klasa `App\Blocks\Nazwa extends Log1x\AcfComposer\Block`
 2. `resources/views/blocks/nazwa.blade.php` — widok (nazwa pliku = `$slug`)
 3. `resources/css/blocks/nazwa.scss` — **twórz zawsze**, nawet pusty, z gotowym pustym selektorem
    `.b-<slug> { }` (patrz np. `resources/css/blocks/map.scss`)
 4. `resources/js/blocks/nazwa.js` — opcjonalnie, **musisz** dodać warunkowy import w `resources/js/app.js`
+5. `resources/views/blocks/preview-nazwa.blade.php` — **twórz zawsze** (podgląd bloku w edytorze
+   Gutenberga, patrz „Podgląd bloku w edytorze” niżej)
 
 Import nowego pliku scss w `resources/css/app.css` dodawaj zawsze na dole listy pod komentarzem
 `/*-- USED ---*/` i nad `/*-- NOT USED ---*/` (nowy blok jest od razu używany, więc trafia do sekcji
 USED, a nie do listy nieużywanych na dole pliku).
+
+Podgląd bloku w edytorze (`preview-<slug>.blade.php`)
+
+W edytorze blok pokazuje uproszczony podgląd zamiast pełnego frontu. Do każdego nowego bloku
+(także gdy powstaje z Figmy) dodaj dwie rzeczy:
+
+1. Owiń widok bloku w warunek — cały dotychczasowy markup (łącznie z komentarzem `<!--- nazwa --->`)
+   trafia do `@else`:
+
+```blade
+@if ($block->preview)
+	@include('blocks.preview-nazwa')
+@else
+<!--- nazwa --->
+<section ...>
+	...
+</section>
+@endif
+```
+
+2. Utwórz `resources/views/blocks/preview-nazwa.blade.php` z gotową treścią podglądu — bezpośrednio
+   w tym pliku, bez stubów `@include` i bez podkatalogu `blocks/previews/`.
+
+   Struktura podglądu: `.acf-preview` → `__meta` (tytuł bloku po polsku + `acf/<slug>` +
+   `@include('partials.block-preview-settings')`) → `__content`. Style tych klas są gotowe w
+   `resources/css/editor.css` — nie dopisuj nowych. Treść pliku:
+
+```blade
+<!--- nazwa preview --->
+
+<div class="acf-preview" @if(!empty($nomt)) data-acf-nomt @endif>
+	<div class="acf-preview__meta">
+		<div class="acf-preview__heading">
+			<div class="acf-preview__title">Nazwa bloku po polsku</div>
+			<span class="acf-preview__slug">acf/nazwa</span>
+		</div>
+		@include('partials.block-preview-settings')
+	</div>
+	<div class="acf-preview__content">
+		@if (!empty($g_nazwa['header']))
+		<p class="text-h5">{{ $g_nazwa['header'] }}</p>
+		@endif
+		@if (!empty($g_nazwa['text']))
+		<div>{!! $g_nazwa['text'] !!}</div>
+		@endif
+		<div class="acf-preview__grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+			@foreach (array_slice((array) ($nazwa ?? []), 0, 6) as $item)
+			<div class="acf-preview__card flex flex-col gap-2">
+				@if (!empty($item['header']))
+				<p class="text-h6">{{ $item['header'] }}</p>
+				@endif
+			</div>
+			@endforeach
+		</div>
+		@if (count((array) ($nazwa ?? [])) > 6)
+		<p>+ {{ count((array) ($nazwa ?? [])) - 6 }} kolejnych elementów</p>
+		@endif
+	</div>
+</div>
+```
+
+Zasady podglądu:
+
+- pokazuj tylko to, co redaktor wpisał: nagłówek, treść, przyciski (jako `.acf-preview-button` w
+  `.acf-preview-actions`, bez `x-button`), pierwszy obrazek jako miniaturę `.acf-preview__media`
+  (`h-20 w-32 object-contain`) i repeater przycięty `array_slice(..., 0, 6)` z dopiskiem „+ N kolejnych”,
+- używaj zmiennych z `with()` bloku (`$g_nazwa`, `$nazwa`, `$nomt`) — nie wołaj `get_field()` w podglądzie,
+- bez `data-gsap-*`, bez klas `.b-<slug>`, bez animacji i bez ciężkich elementów (video, slider, mapa,
+  shortcode formularza — zamiast nich krótki tekst, np. „Formularz kontaktowy”),
+- bloki bez własnych pól (patrz „Bloki bez własnych pól na treść”) dostają podgląd z samym tytułem
+  i ustawieniami, bez treści.
 
 Rejestracja jest automatyczna (ACF Composer skanuje `app/Blocks`) — nie dopisuj bloków ręcznie
 do `functions.php` ani do `ThemeServiceProvider`.
@@ -870,7 +943,8 @@ Definition of done
 Zadanie kończy kompletna, przejrzana implementacja zgodna z projektem, repozytorium, responsywnością
 i dostępnością. Nie wprowadzaj zbędnych duplikatów ani regresji. Sprawdź składnię i importy
 w dostępnym zakresie. Nowy blok ma pełne ustawienia i `SectionClasses::fromMap()`, komponent
-`x-button`, sekcyjne odstępy, import SCSS i warunkowy import potrzebnego JS. Przypomnij użytkownikowi
+`x-button`, sekcyjne odstępy, import SCSS, warunkowy import potrzebnego JS oraz podgląd edytora
+(`preview-<slug>.blade.php` + warunek `@if ($block->preview)` w widoku). Przypomnij użytkownikowi
 o wymaganym `yarn build` i commicie `public/build`; nie wykonuj tych komend.
 
 ⸻

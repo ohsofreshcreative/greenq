@@ -20,15 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (document.querySelector('.b-slider')) import('./blocks/slider');
   if (document.querySelector('.b-values')) import('./blocks/values');
   if (document.querySelector('.b-catalogues')) import('./blocks/catalogues');
-  if (document.querySelector('.b-offer')) import('./blocks/offer');
-  if (document.querySelector('.b-courses')) import('./blocks/courses');
-  if (document.querySelector('.b-plan')) import('./blocks/plan');
-  if (document.querySelector('.b-activities')) import('./blocks/activities');
   if (document.querySelector('.b-proces')) import('./blocks/proces');
-  if (document.querySelector('.b-submenu')) import('./blocks/submenu');
-  if (document.querySelector('.b-attractions')) import('./blocks/attractions');
   if (document.querySelector('.b-overlap')) import('./blocks/overlap');
-  if (document.querySelector('.b-possibilities')) import('./blocks/possibilities');
 });
 
 /*--- NOT USED ---*/

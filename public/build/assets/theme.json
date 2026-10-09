@@ -1514,6 +1514,11 @@
           "color": "rgb(var(--p-500))"
         },
         {
+          "name": "Primary (800)",
+          "slug": "primary-800",
+          "color": "rgb(var(--p-800))"
+        },
+        {
           "name": "Primary (900)",
           "slug": "primary-900",
           "color": "rgb(var(--p-900))"
@@ -1577,11 +1582,6 @@
           "name": "Third (Hover)",
           "slug": "third-hover",
           "color": "rgb(var(--t-hover))"
-        },
-        {
-          "name": "Third (100)",
-          "slug": "third-100",
-          "color": "rgb(var(--t-100))"
         },
         {
           "name": "Third (600)",
