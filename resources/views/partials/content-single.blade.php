@@ -20,7 +20,7 @@ $events_card_button = get_field('events_card_button') ?: [
 		</picture>
 	</figure>
 
-	<div class="absolute inset-0 z-1 pointer-events-none" style="background: linear-gradient(90deg, #001D51 50%, rgba(0, 39, 109, 0.60) 100%);"></div>
+	<div class="absolute inset-0 z-1 pointer-events-none" style="background: linear-gradient(90deg, #163710 50%, rgba(22, 55, 16, 0.60) 100%);"></div>
 	@endif
 
 	<div class="__wrapper c-main relative z-10 -spt">

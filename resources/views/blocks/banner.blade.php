@@ -11,7 +11,7 @@
 
 	<img data-gsap-element="signet" class="absolute mix-blend-overlay opacity-20 z-2 pointer-events-none h-[704px] left-0 -translate-x-1/2 top-1/2 -translate-y-1/2" src="{{ get_template_directory_uri() }}/resources/images/signet.svg" alt="" />
 
-	<div class="__wrapper c-main relative z-10 -spt">
+	<div @class(['__wrapper c-main relative z-10 -spt', 'grid grid-cols-1 md:grid-cols-2 items-center gap-20' => !empty($g_banner['image']['ID'])])>
 		<div class="__content flex flex-col gap-6 max-w-3xl">
 			<h1 data-gsap-element="header" class="text-h2">
 				{{ $g_banner['title'] }}
@@ -22,5 +22,10 @@
 			</div>
 			@endif
 		</div>
+		@if (!empty($g_banner['image']['ID']))
+		<figure data-gsap-element="img" class="__img m-0">
+			{!! wp_get_attachment_image($g_banner['image']['ID'], 'large', false, ['class' => 'w-full h-auto radius-img']) !!}
+		</figure>
+		@endif
 	</div>
 </section>

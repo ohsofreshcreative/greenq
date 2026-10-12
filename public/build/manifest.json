@@ -33,7 +33,7 @@
     "src": "editor.deps.json"
   },
   "resources/css/app.css": {
-    "file": "assets/app-CPV2IQgQ.css",
+    "file": "assets/app-BYWt6NRa.css",
     "name": "app",
     "names": [
       "app.css"
@@ -42,14 +42,14 @@
     "isEntry": true,
     "assets": [
       "assets/PolySans Bulky Wide-VzLwgn3K.ttf",
-      "assets/btn-arrow-DSZ4x1kn.svg",
-      "assets/bottom-arrow-BE5KB43S.svg",
-      "assets/pointer-5_58814e.svg",
+      "assets/btn-arrow-_wd7Wq1M.svg",
+      "assets/bottom-arrow-CD-AJC3u.svg",
+      "assets/pointer-DPtGZRxA.svg",
       "assets/cta-mask-DkOSFVpY.svg"
     ]
   },
   "resources/css/editor.css": {
-    "file": "assets/editor-Dyz6-VX1.css",
+    "file": "assets/editor-_jMhcvak.css",
     "name": "editor",
     "names": [
       "editor.css"
@@ -58,9 +58,9 @@
     "isEntry": true,
     "assets": [
       "assets/PolySans Bulky Wide-VzLwgn3K.ttf",
-      "assets/btn-arrow-DSZ4x1kn.svg",
-      "assets/bottom-arrow-BE5KB43S.svg",
-      "assets/pointer-5_58814e.svg",
+      "assets/btn-arrow-_wd7Wq1M.svg",
+      "assets/bottom-arrow-CD-AJC3u.svg",
+      "assets/pointer-DPtGZRxA.svg",
       "assets/cta-mask-DkOSFVpY.svg"
     ]
   },
@@ -69,11 +69,11 @@
     "src": "resources/fonts/PolySans Bulky Wide.ttf"
   },
   "resources/images/bottom-arrow.svg": {
-    "file": "assets/bottom-arrow-BE5KB43S.svg",
+    "file": "assets/bottom-arrow-CD-AJC3u.svg",
     "src": "resources/images/bottom-arrow.svg"
   },
   "resources/images/btn-arrow.svg": {
-    "file": "assets/btn-arrow-DSZ4x1kn.svg",
+    "file": "assets/btn-arrow-_wd7Wq1M.svg",
     "src": "resources/images/btn-arrow.svg"
   },
   "resources/images/cta-mask.svg": {
@@ -81,7 +81,7 @@
     "src": "resources/images/cta-mask.svg"
   },
   "resources/images/pointer.svg": {
-    "file": "assets/pointer-5_58814e.svg",
+    "file": "assets/pointer-DPtGZRxA.svg",
     "src": "resources/images/pointer.svg"
   },
   "resources/js/app.js": {

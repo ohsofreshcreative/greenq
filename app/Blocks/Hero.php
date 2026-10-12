@@ -55,6 +55,18 @@ class Hero extends Block
 				'label' => 'Przycisk #2',
 				'return_format' => 'array',
 			])
+			->addImage('bar_icon', [
+				'label' => 'Pasek - ikona',
+				'return_format' => 'array',
+				'preview_size' => 'thumbnail',
+			])
+			->addText('bar_header', ['label' => 'Pasek - nagłówek'])
+			->addWysiwyg('bar_text', [
+				'label' => 'Pasek - treść',
+				'tabs' => 'all',
+				'toolbar' => 'full',
+				'media_upload' => true,
+			])
 			->endGroup()
 
 			/*--- USTAWIENIA BLOKU ---*/

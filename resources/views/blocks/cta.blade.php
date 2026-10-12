@@ -32,6 +32,21 @@
 				<div data-gsap-element="txt" class="text-white">{!! $g_octa['txt'] !!}</div>
 				@endif
 
+				@if (!empty($g_octa['r_contacts']))
+				<div class="__links m-btn">
+					@foreach ($g_octa['r_contacts'] as $contact)
+					@if (!empty($contact['link']['url']))
+					<a href="{{ $contact['link']['url'] }}" class="__link flex items-center text-white">
+						@if (!empty($contact['icon']['ID']))
+						<span class="__icon shrink-0 mr-4">{!! wp_get_attachment_image($contact['icon']['ID'], 'thumbnail') !!}</span>
+						@endif
+						{{ $contact['link']['title'] }}
+					</a>
+					@endif
+					@endforeach
+				</div>
+				@endif
+
 				<div class="inline-buttons m-btn">
 					@if (!empty($g_octa['button1']))
 					<x-button

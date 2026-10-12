@@ -23,7 +23,7 @@
 	@endif
 
 	@if (!empty($g_hero['video']) || !empty($g_hero['image']))
-	<div class="absolute inset-0 z-1 pointer-events-none" style="background: linear-gradient(90deg, #001D51 5.84%, rgba(0, 29, 81, 0.20) 100.47%);"></div>
+	<div class="absolute inset-0 z-1 pointer-events-none" style="background: linear-gradient(90deg, #173A11 5.84%, rgba(23, 58, 17, 0) 100.47%);"></div>
 	@endif
 
 	<img data-gsap-element="signet" class="absolute mix-blend-overlay opacity-20 z-2 pointer-events-none" src="{{ get_template_directory_uri() }}/resources/images/signet.svg" alt="" />
@@ -60,6 +60,24 @@
 				</x-button>
 				@endif
 			</div>
+
+			@if (!empty($g_hero['bar_header']) || !empty($g_hero['bar_text']))
+			<div data-gsap-element="card" class="__bar flex items-center m-btn px-10 py-6 radius">
+				@if (!empty($g_hero['bar_icon']['ID']))
+				<div class="__icon shrink-0 mr-6">
+					{!! wp_get_attachment_image($g_hero['bar_icon']['ID'], 'thumbnail') !!}
+				</div>
+				@endif
+				<div class="__txt text-white">
+					@if (!empty($g_hero['bar_header']))
+					<p class="text-h7">{{ $g_hero['bar_header'] }}</p>
+					@endif
+					@if (!empty($g_hero['bar_text']))
+					<div>{!! $g_hero['bar_text'] !!}</div>
+					@endif
+				</div>
+			</div>
+			@endif
 		</div>
 	</div>
 

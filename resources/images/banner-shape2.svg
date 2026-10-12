@@ -2,9 +2,9 @@
 <path opacity="0.8" fill-rule="evenodd" clip-rule="evenodd" d="M881 169H2109V0H1044.79C954.31 0 881 73.4156 881 164.029V169Z" fill="url(#paint0_linear_53484_1965)"/>
 <defs>
 <linearGradient id="paint0_linear_53484_1965" x1="2023" y1="84.5" x2="881" y2="84.5" gradientUnits="userSpaceOnUse">
-<stop stop-color="#2682E8" stop-opacity="0"/>
-<stop offset="0.5" stop-color="#2682E8"/>
-<stop offset="1" stop-color="#171C84"/>
+<stop stop-color="#42A531" stop-opacity="0"/>
+<stop offset="0.5" stop-color="#42A531"/>
+<stop offset="1" stop-color="#163710"/>
 </linearGradient>
 </defs>
 </svg>

@@ -1,50 +1,51 @@
+@if ($block->preview)
+	@include('blocks.preview-slider')
+@else
 <!--- slider --->
 
 <section
 	data-gsap-anim="section"
 	@if(!empty($section_id)) id="{{ $section_id }}" @endif
-	@class([ 'b-slider relative bg-secondary-lighter -smt' ,
+	@class([ 'b-slider relative -smt' ,
 	$sectionClass=> filled($sectionClass),
 	$section_class => filled($section_class),
 	$background => filled($background) && $background !== 'none',
 	])>
 
-	@if ($bgshape)
-	<img class="absolute max-h-32 top-0 right-0 z-10" src="{{ get_template_directory_uri() }}/resources/images/top-shape.svg" alt="" />
-	@endif
-
-	<div class="c-main section-py">
-		@if (!empty($slider_title))
-		<div class="__wrapper relative z-20">
-			<h2 class="text-primary">{{ $slider_title }}</h2>
+	<div class="__wrapper c-main">
+		@if (!empty($g_slider['header']) || !empty($g_slider['text']))
+		<div class="__top grid grid-cols-1 md:grid-cols-2 items-center gap-8">
+			@if (!empty($g_slider['header']))
+			<h2 data-gsap-element="header" class="text-h2">{{ $g_slider['header'] }}</h2>
+			@endif
+			@if (!empty($g_slider['text']))
+			<div data-gsap-element="txt" class="__txt">
+				{!! $g_slider['text'] !!}
+			</div>
+			@endif
 		</div>
 		@endif
-		<div class="swiper slider-standard relative !overflow-visible z-20 mt-14">
+
+		<div class="swiper slider-standard relative !overflow-visible m-btn">
 			<div class="swiper-wrapper">
 				@foreach ($slides as $slide)
-				<div class="swiper-slide">
-					<div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-6 h-full">
-						@if (!empty($slide['image_url']))
-						<figure class="relative m-0 h-full min-h-52 overflow-hidden">
-							<img
-								src="{{ $slide['image_url'] }}"
-								alt="{{ $slide['image_alt'] }}"
-								class="w-full h-full min-h-52 object-cover radius-img">
-							<span class="absolute top-0 left-0 w-14 h-14 bg-secondary text-white text-lg font-header !font-medium flex items-center justify-center rounded-2xl z-10">
-								{{ str_pad($loop->index + 1, 2, '0', STR_PAD_LEFT) }}
-							</span>
-							<div class="absolute top-0 left-0 w-18 h-18 bg-secondary-lighter rounded-br-3xl"></div>
-						</figure>
+				<div class="swiper-slide !w-[83%] sm:!w-[44%] lg:!w-[32%]">
+					<div class="__card flex flex-col justify-between gap-20 h-full">
+						@if (!empty($slide['icon']['ID']))
+						<div class="__icon m-img">
+							{!! wp_get_attachment_image($slide['icon']['ID'], 'thumbnail') !!}
+						</div>
 						@endif
-						<div class="__content ">
-							@if (!empty($slide['icon_url']))
-							<img class="mb-4 w-14 h-14 object-contain" src="{{ $slide['icon_url'] }}" alt="{{ $slide['icon_alt'] }}">
+						<div class="__txt">
+							@if (!empty($slide['label']))
+							<p class="__label m-title">{{ $slide['label'] }}</p>
 							@endif
-							<p class="text-h5 text-primary mb-4">{{ $slide['title'] }}</p>
-							@if (!empty($slide['excerpt']))
-							<p class="mb-6">{{ $slide['excerpt'] }}</p>
+							@if (!empty($slide['header']))
+							<p class="__header text-h6 m-header">{{ $slide['header'] }}</p>
 							@endif
-							<x-button class="m-btn" :href="$slide['url']" variant="underline">Więcej</x-button>
+							@if (!empty($slide['text']))
+							<div>{!! $slide['text'] !!}</div>
+							@endif
 						</div>
 					</div>
 				</div>
@@ -65,10 +66,11 @@
 					</div>
 				</div>
 
-				{{-- Pasek postępu --}}
 				<div class="__progress w-full md:flex-1 h-1 bg-white rounded-full overflow-hidden md:ml-10 order-1 md:order-2">
 					<div class="__progress-fill h-full bg-secondary rounded-full transition-[width] duration-300" style="width: 0%"></div>
-				</div
-					</div>
+				</div>
 			</div>
+		</div>
+	</div>
 </section>
+@endif

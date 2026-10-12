@@ -31,6 +31,11 @@ class Banner extends Block
 			/*--- TAB #1 ---*/
 			->addTab('Treść', ['placement' => 'top'])
 			->addGroup('g_banner', ['label' => 'banner'])
+			->addImage('image', [
+				'label' => 'Obraz',
+				'return_format' => 'array',
+				'preview_size' => 'medium',
+			])
 			->addText('title', ['label' => 'Tytuł'])
 			->addWysiwyg('text', [
 				'label' => 'Treść',

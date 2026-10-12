@@ -9,107 +9,136 @@ use App\Support\SectionClasses;
 
 class Slider extends Block
 {
-    public $name = 'Slider - Oferta';
-    public $description = 'slider';
-    public $slug = 'slider';
-    public $category = 'formatting';
-    public $icon = 'image-flip-horizontal';
-    public $keywords = ['slider', 'oferta'];
-    public $mode = 'edit';
-    public $supports = [
-        'align' => false,
-        'mode' => true,
-        'jsx' => true,
-    ];
+	public $name = 'Slider';
+	public $description = 'slider';
+	public $slug = 'slider';
+	public $category = 'formatting';
+	public $icon = 'image-flip-horizontal';
+	public $keywords = ['slider', 'kafelki'];
+	public $mode = 'edit';
+	public $supports = [
+		'align' => false,
+		'mode' => true,
+		'jsx' => true,
+	];
 
-    public function fields()
-    {
-        $slider = new FieldsBuilder('slider');
+	public function fields()
+	{
+		$slider = new FieldsBuilder('slider');
 
-        $slider
-            ->setLocation('block', '==', 'acf/slider')
-            ->addTab('Treści', ['placement' => 'top'])
-            ->addText('slider_title', ['label' => 'Tytuł sekcji'])
-            ->addRelationship('slider_offers', [
-                'label'         => 'Wpisy oferty (kolejność ma znaczenie)',
-                'post_type'     => ['offer'],
-                'filters'       => ['search'],
-                'return_format' => 'object',
-                'instructions'  => 'Wybierz i ułóż wpisy oferty w dowolnej kolejności. Jeśli pole jest puste, wyświetlą się wszystkie automatycznie.',
-            ])
+		$slider
+			->setLocation('block', '==', 'acf/slider') // ważne!
+			/*--- FIELDS ---*/
+			->addTab('Elementy', ['placement' => 'top'])
+			->addGroup('g_slider', ['label' => ''])
 
-            ->addTab('Ustawienia bloku', ['placement' => 'top'])
-            ->addText('section_id', ['label' => 'ID'])
-            ->addText('section_class', ['label' => 'Dodatkowe klasy CSS'])
-            ->addTrueFalse('nomt', [
-                'label' => 'Usunięcie marginesu górnego',
-                'ui' => 1,
-                'ui_on_text' => 'Tak',
-                'ui_off_text' => 'Nie',
-            ])
-			->addTrueFalse('bgshape', [
-				'label' => 'Kształt w tle',
+			->addText('header', ['label' => 'Nagłówek'])
+			->addWysiwyg('text', [
+				'label' => 'Treść',
+				'tabs' => 'all',
+				'toolbar' => 'full',
+				'media_upload' => true,
+			])
+
+			->addRepeater('r_slider', [
+				'label' => 'Slajdy',
+				'layout' => 'table',
+				'min' => 1,
+				'button_label' => 'Dodaj slajd',
+			])
+			->addImage('icon', [
+				'label' => 'Ikona',
+				'return_format' => 'array',
+				'preview_size' => 'thumbnail',
+			])
+			->addText('label', ['label' => 'Etykieta'])
+			->addText('header', ['label' => 'Nagłówek'])
+			->addWysiwyg('text', [
+				'label' => 'Treść',
+				'tabs' => 'all',
+				'toolbar' => 'full',
+				'media_upload' => true,
+			])
+			->endRepeater()
+
+			->endGroup()
+
+			/*--- USTAWIENIA BLOKU ---*/
+
+			->addTab('Ustawienia bloku', ['placement' => 'top'])
+			->addText('section_id', [
+				'label' => 'ID',
+			])
+			->addText('section_class', [
+				'label' => 'Dodatkowe klasy CSS',
+			])
+			->addTrueFalse('nolist', [
+				'label' => 'Brak punktatorów',
 				'ui' => 1,
 				'ui_on_text' => 'Tak',
 				'ui_off_text' => 'Nie',
 			])
-            ->addSelect('background', [
-                'label' => 'Kolor tła',
-                'choices' => SectionBackgrounds::choices(),
-                'default_value' => 'none',
-                'ui' => 0,
-                'allow_null' => 0,
-            ]);
+			->addTrueFalse('flip', [
+				'label' => 'Odwrotna kolejność',
+				'ui' => 1,
+				'ui_on_text' => 'Tak',
+				'ui_off_text' => 'Nie',
+			])
+			->addTrueFalse('wide', [
+				'label' => 'Szeroka kolumna',
+				'ui' => 1,
+				'ui_on_text' => 'Tak',
+				'ui_off_text' => 'Nie',
+			])
+			->addTrueFalse('nomt', [
+				'label' => 'Usunięcie marginesu górnego',
+				'ui' => 1,
+				'ui_on_text' => 'Tak',
+				'ui_off_text' => 'Nie',
+			])
+			->addTrueFalse('gap', [
+				'label' => 'Większy odstęp',
+				'ui' => 1,
+				'ui_on_text' => 'Tak',
+				'ui_off_text' => 'Nie',
+			])
+			->addSelect('background', [
+				'label' => 'Kolor tła',
+				'choices' => SectionBackgrounds::choices(),
+				'default_value' => 'none',
+				'ui' => 0, // Ulepszony interfejs
+				'allow_null' => 0,
+			]);
 
-        return $slider;
-    }
+		return $slider;
+	}
 
-    public function with(): array
-    {
-        $selected = get_field('slider_offers') ?: [];
+	public function with(): array
+	{
+		$fields = [
+			'g_slider' => get_field('g_slider'),
+			'slides' => get_field('g_slider')['r_slider'] ?? [],
 
-        if (empty($selected)) {
-            $offers_query = new \WP_Query([
-                'post_type'      => 'offer',
-                'post_parent'    => 0,
-                'posts_per_page' => -1,
-                'orderby'        => 'menu_order',
-                'order'          => 'ASC',
-                'post_status'    => 'publish',
-            ]);
-            $selected = $offers_query->posts;
-            wp_reset_postdata();
-        }
+			'section_id' => get_field('section_id'),
+			'section_class' => get_field('section_class'),
 
-        $slides = [];
-        foreach ($selected as $post) {
-            $thumb_id = get_post_thumbnail_id($post->ID);
-            $icon     = get_field('offer_icon', $post->ID);
-            $slides[] = [
-                'title'     => $post->post_title,
-                'excerpt'   => get_the_excerpt($post),
-                'url'       => get_permalink($post->ID),
-                'image_url' => $thumb_id ? wp_get_attachment_image_url($thumb_id, 'large') : null,
-                'image_alt' => $thumb_id ? get_post_meta($thumb_id, '_wp_attachment_image_alt', true) : '',
-                'icon_url'  => $icon['url'] ?? null,
-                'icon_alt'  => $icon['alt'] ?? '',
-            ];
-        }
+			'flip' => (bool) get_field('flip'),
+			'wide' => (bool) get_field('wide'),
+			'nomt' => (bool) get_field('nomt'),
+			'gap' => (bool) get_field('gap'),
+			'nolist' => (bool) get_field('nolist'),
 
-        $fields = [
-            'slides'       => $slides,
-            'slider_title' => get_field('slider_title'),
-            'section_id'   => get_field('section_id'),
-            'section_class' => get_field('section_class'),
-            'nomt'         => (bool) get_field('nomt'),
-			'bgshape' => (bool) get_field('bgshape'),
-            'background'   => get_field('background') ?: 'none',
-        ];
+			'background' => get_field('background') ?: 'none',
+		];
 
-        $fields['sectionClass'] = SectionClasses::fromMap($fields, [
-            'nomt' => '!mt-0',
-        ]);
+		$fields['sectionClass'] = SectionClasses::fromMap($fields, [
+			'flip' => 'order-flip',
+			'wide' => 'wide',
+			'nomt' => '!mt-0',
+			'gap' => 'wider-gap',
+			'nolist' => 'no-list',
+		]);
 
-        return $fields;
-    }
+		return $fields;
+	}
 }

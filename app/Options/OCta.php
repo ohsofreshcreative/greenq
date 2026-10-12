@@ -40,6 +40,21 @@ class Octa extends Options
 				'label'         => 'Przycisk #2 (biały)',
 				'return_format' => 'array',
 			])
+			->addRepeater('r_contacts', [
+				'label'        => 'Dane kontaktowe',
+				'layout'       => 'table',
+				'button_label' => 'Dodaj kontakt',
+			])
+			->addImage('icon', [
+				'label'         => 'Ikona',
+				'return_format' => 'array',
+				'preview_size'  => 'thumbnail',
+			])
+			->addLink('link', [
+				'label'         => 'Link (np. tel: lub mailto:)',
+				'return_format' => 'array',
+			])
+			->endRepeater()
 			->addText('title', ['label' => 'Tytuł'])
 			->addText('shortcode', [
 				'label' => 'Kod formularza',
